@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* Page center */
+.form-wrapper {
+  max-width: 420px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.form-wrapper h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  color: #222;
+}
+
+/* Form groups */
+.form-group {
+  position: relative;
+  margin-bottom: 22px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  background: transparent;
+  transition: border-color 0.3s;
+}
+
+/* Floating label */
+.form-group label {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  padding: 0 6px;
+  font-size: 14px;
+  color: #777;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+/* Input focus / filled */
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4f46e5;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group textarea:focus + label,
+.form-group textarea:not(:placeholder-shown) + label {
+  top: -8px;
+  font-size: 12px;
+  color: #4f46e5;
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 14px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #4338ca;
+}
+
+/* Mobile spacing */
+@media (max-width: 480px) {
+  .form-wrapper {
+    margin: 20px;
+    padding: 25px;
+  }
+}
+
+</style>
+<body>
+<div class="form-wrapper">
+  <h2>Contact Us</h2>
+
+  <form id="myForm">
+    <input type="hidden" id="rowId" value="">
+    <div class="form-group">
+      <input type="text" id="name" placeholder=" " required />
+      <label>Name</label>
+    </div>
+
+    <div class="form-group">
+      <input type="email" id="email" placeholder=" " required />
+      <label>Email</label>
+    </div>
+
+    <div class="form-group">
+      <textarea id="message" placeholder=" " rows="4"></textarea>
+      <label>Message</label>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<script>
+// 🔹 EDIT MODE FUNCTION (OUTSIDE)
+function editNote(rowNumber, name, email, message) {
+  document.getElementById("rowId").value = rowNumber;
+  document.getElementById("name").value = name;
+  document.getElementById("email").value = email;
+  document.getElementById("message").value = message;
+}
+
+// 🔹 FORM SUBMIT HANDLER
+document.getElementById("myForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const rowIdEl = document.getElementById("rowId");
+  const rowId =
+    rowIdEl && rowIdEl.value.trim() !== ""
+      ? rowIdEl.value.trim()
+      : null;
+
+  const data = {
+    rowId: rowId,
+    name: document.getElementById("name").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    message: document.getElementById("message").value.trim()
+  };
+
+  console.log("Submitting data:", data);
+
+  try {
+    const res = await fetch(
+      "https://script.google.com/macros/s/AKfycbz--iv9wUwplaFtORWy9Olx_a2VRuS0LshjZEjnUcCTnIBXajulozkhqFVFNbbPGckd/exec",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }
+    );
+
+    const result = await res.json();
+    console.log("Server response:", result);
+
+    alert(rowId ? "Note update ho gaya ✅" : "New note add ho gaya ✅");
+
+    document.getElementById("myForm").reset();
+    rowIdEl.value = "";
+
+  } catch (err) {
+    console.error("Submit error:", err);
+    alert("Kuch error aaya ❌ Please try again");
+  }
+});
+
+
+
+</script>
+
+</body>
+</html>
