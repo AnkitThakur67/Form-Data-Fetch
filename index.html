@@ -104,17 +104,17 @@ button:hover {
   <form id="myForm">
     <input type="hidden" id="rowId" value="">
     <div class="form-group">
-      <input type="text" id="name" placeholder=" " required />
+      <input type="text" id="name" name="name" placeholder=" " required />
       <label>Name</label>
     </div>
 
     <div class="form-group">
-      <input type="email" id="email" placeholder=" " required />
+      <input type="email" id="email" name="email" placeholder=" " required />
       <label>Email</label>
     </div>
 
     <div class="form-group">
-      <textarea id="message" placeholder=" " rows="4"></textarea>
+      <textarea id="message" name="message" placeholder=" " rows="4" required></textarea>
       <label>Message</label>
     </div>
 
@@ -150,8 +150,8 @@ document.getElementById("myForm").addEventListener("submit", async (e) => {
   console.log("Submitting data:", data);
 
   try {
-    const res = await fetch(
-      "https://script.google.com/macros/s/AKfycbz--iv9wUwplaFtORWy9Olx_a2VRuS0LshjZEjnUcCTnIBXajulozkhqFVFNbbPGckd/exec",
+     await fetch(
+      "https://script.google.com/macros/s/AKfycbwtOPd1GWDdg0zrTMFKUeW2XS7PM1_zMRT7TXRfLI-wP9gDmcv1j9TwAmYGej4LzUmw/exec",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -159,11 +159,7 @@ document.getElementById("myForm").addEventListener("submit", async (e) => {
       }
     );
 
-    const result = await res.json();
-    console.log("Server response:", result);
-
     alert(rowId ? "Note update ho gaya ✅" : "New note add ho gaya ✅");
-
     document.getElementById("myForm").reset();
     rowIdEl.value = "";
 
